@@ -1,4 +1,4 @@
-# Database_Migration
+# DATABASE_MIGRATION
 
 **COMPANY**: CODTECH IT SOLUTIONS
 
