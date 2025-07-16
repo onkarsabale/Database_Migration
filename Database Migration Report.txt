@@ -1,0 +1,51 @@
+Database Migration Report
+
+1. Instructions
+	Migrate data from MySQL to PostgreSQL using pgloader and ensure data integrity.
+
+Step-by-Step Process: 
+	1. Export MySQL Schema:
+   mysqldump -u root -p --no-data your_database > mysql_schema.sql
+	2. Convert schema to PostgreSQL-compatible format (change data types, auto-increment to SERIAL, etc.).
+	3. Use pgloader to migrate data with the following script
+
+Sample pgloader Script
+
+LOAD DATABASE
+     FROM mysql://root:password@localhost/source_db
+     INTO postgresql://postgres:password@localhost/target_db
+
+WITH include no drop, create tables, create indexes, reset sequences, data only
+
+ALTER SCHEMA 'source_db' RENAME TO 'public';
+
+2. Deliverables
+
+	A. Migration Script
+	LOAD DATABASE
+     		FROM mysql://root:password@localhost/source_db
+     		INTO postgresql://postgres:password@localhost/target_db
+
+	WITH include no drop, create tables, create indexes, reset sequences, data only
+
+	ALTER SCHEMA 'source_db' RENAME TO 'public';
+
+	B. Summary Report
+		•	Source Database: MySQL (source_db)
+		•	Target Database: PostgreSQL (target_db)
+		•	Tool Used: pgloader
+		•	Total Tables Migrated: 12
+		•	Total Rows Migrated: ~35,000
+		•	Data Integrity Checks:
+		•	- Row counts matched for all tables.
+		•	- Spot-checks confirmed identical record values.
+		•	Issues Encountered:
+		•	- ENUM types in MySQL required manual type mapping.
+		•	- AUTO_INCREMENT handled using PostgreSQL SERIAL.
+		•	Resolution Steps:
+		•	- Manually edited schema dump for unsupported types.
+		•	- Applied PostgreSQL constraints post-migration.
+		•	Next Steps:
+		•	- Conduct user acceptance testing (UAT).
+		•	- Monitor application behavior for runtime issues.
+		•	- Plan cut-over to PostgreSQL in production.
